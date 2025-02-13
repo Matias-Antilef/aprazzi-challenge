@@ -11,9 +11,9 @@ import {
   IonLabel,
   IonFooter,
 } from "@ionic/react";
-import { PublicRoutes } from "../../../routes/routes";
+import { PublicRoutes } from "@/routes/routes";
 
-const Register: React.FC = () => {
+const RegisterView: React.FC = () => {
   return (
     <IonPage>
       <IonContent className="ion-padding">
@@ -51,4 +51,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default RegisterView;

@@ -32,10 +32,12 @@ import "@ionic/react/css/palettes/dark.system.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import Login from "./pages/auth/login/Login";
-import Register from "./pages/auth/register/Register";
-import { PublicRoutes } from "./routes/routes";
-import Home from "./pages/core/Home";
+import { PrivateRoutes, PublicRoutes } from "@/routes/routes";
+import RegisterView from "@/pages/auth/register-view";
+import TaskInfoView from "@/pages/core/task-info/task-info-view";
+import LoginView from "@/pages/auth/login-view";
+import Home from "@/pages/core/home";
+import AuthGuard from "./utils/auth-guard";
 
 setupIonicReact();
 
@@ -44,11 +46,14 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonRouterOutlet>
         <Route exact path="/">
-          <Redirect to={PublicRoutes.HOME} />
+          <Redirect to={PrivateRoutes.HOME} />
         </Route>
-        <Route exact path={PublicRoutes.HOME} component={Home} />
-        <Route exact path={PublicRoutes.LOGIN} component={Login} />
-        <Route exact path={PublicRoutes.REGISTER} component={Register} />
+        <Route exact path={PublicRoutes.LOGIN} component={LoginView} />
+        <Route exact path={PublicRoutes.REGISTER} component={RegisterView} />
+        <AuthGuard>
+          <Route exact path={PrivateRoutes.HOME} component={Home} />
+        </AuthGuard>
+        <Route exact path={PrivateRoutes.TASK_INFO} component={TaskInfoView} />
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>

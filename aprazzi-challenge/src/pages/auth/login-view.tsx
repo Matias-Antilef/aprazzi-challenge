@@ -1,3 +1,6 @@
+import { useUserContext } from "@/context/user-context";
+import { auth } from "@/firebase/firebase";
+import { PrivateRoutes, PublicRoutes } from "@/routes/routes";
 import {
   IonContent,
   IonPage,
@@ -11,15 +14,29 @@ import {
   IonLabel,
   IonFooter,
 } from "@ionic/react";
-import { PublicRoutes } from "../../../routes/routes";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useHistory } from "react-router";
 
-const Login: React.FC = () => {
+const LoginView: React.FC = () => {
   const history = useHistory();
+  const { createUser } = useUserContext();
   const HandleLogin = () => {
     console.log("Botón de inicio de sesión clickeado");
-    history.push(PublicRoutes.HOME);
+    history.push(PrivateRoutes.HOME);
   };
+  async function handleOnClick() {
+    const googleProvider = new GoogleAuthProvider();
+    await signInWithGoogle(googleProvider);
+  }
+
+  async function signInWithGoogle(googleProvider: any) {
+    try {
+      const res = await signInWithPopup(auth, googleProvider);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <IonPage>
@@ -47,6 +64,14 @@ const Login: React.FC = () => {
             >
               Iniciar sesión
             </IonButton>
+
+            <IonButton
+              expand="full"
+              className="ion-margin-top"
+              onClick={handleOnClick}
+            >
+              Iniciar con google
+            </IonButton>
           </IonCardContent>
 
           <IonFooter>
@@ -64,4 +89,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default LoginView;
